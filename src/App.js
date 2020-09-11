@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import firebase from './firebase'
 
 function App() {
+
+  const [scenarios, setScenarios] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      const data = await db.collection("scenarios").get();
+      setScenarios(data.docs.map(doc => doc.data()));
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h1>Scenarios here!</h1>
+       <ul>
+       {scenarios.map(s => (
+         <li key={s.id}>{s.title}</li>
+       ))}
+       </ul>
     </div>
   );
 }
