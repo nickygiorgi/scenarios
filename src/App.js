@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import base from './base'
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Reports from "./Reports";
+import Scenarios from "./Scenarios";
+import Login from "./Login";
+import { AuthProvider } from "./Auth";
+import PrivateRoute from "./PrivateRoute";
 
-function App() {
-
-  const [scenarios, setScenarios] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = base.db;
-      const data = await db.collection("scenarios").get();
-      setScenarios(data.docs.map(doc => doc.data()));
-    }
-    fetchData().catch((error) => { console.log(`Cannot fetch scenarios: ${error}`); });
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-       <h1>Scenarios here!</h1>
-       <ul>
-       {scenarios.map(s => (
-         <li key={s.id}>{s.title}</li>
-       ))}
-       </ul>
-    </div>
+    <AuthProvider>
+      <Router>
+        <div>
+          <Route exact path="/login" component={Login} />
+          <PrivateRoute exact path="/" component={Reports} />
+          <PrivateRoute exact path="/reports" component={Reports} />
+          <PrivateRoute exact path="/scenarios" component={Scenarios} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
