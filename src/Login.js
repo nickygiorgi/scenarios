@@ -36,7 +36,7 @@ const Login = ({ history }) => {
               <input name="email" type="email" placeholder="Email" />
           </div>
           <div className="sub-section-div">
-              <input name="password" type="password" placeholder="Password" />
+              <input name="password" type="password" placeholder="Password" autoComplete="on" />
           </div>
           <div className="sub-section-div">
             <button type="submit">Login</button>
