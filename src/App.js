@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebase from './firebase'
+import base from './base'
 
 function App() {
 
@@ -7,11 +7,11 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const db = firebase.firestore();
+      const db = base.db;
       const data = await db.collection("scenarios").get();
       setScenarios(data.docs.map(doc => doc.data()));
     }
-    fetchData();
+    fetchData().catch((error) => { console.log(`Cannot fetch scenarios: ${error}`); });
   }, []);
 
   return (
